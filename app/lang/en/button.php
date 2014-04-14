@@ -2,6 +2,7 @@
 
 return array(
 
-	'edit'   => 'Edit',
-	'delete' => 'Delete'
+	'edit'       => 'Edit',
+	'deactivate' => 'Deactivate',
+	'delete'	 => 'Delete'
 );

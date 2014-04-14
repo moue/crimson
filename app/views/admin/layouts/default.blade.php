@@ -15,6 +15,8 @@
 		@show
 	</title>
 
+	<link rel="icon" type="image/jpg" href="http://static.thecrimson.com/images/seal.jpg">
+
 	<meta name="keywords" content="@yield('keywords')" />
 	<meta name="author" content="@yield('author')" />
 	<!-- Google will often use this as its description of your page/site. Make it good. -->
@@ -23,25 +25,8 @@
 	<!-- Speaking of Google, don't forget to set your site up: http://google.com/webmasters -->
 	<meta name="google-site-verification" content="">
 
-	<!-- Dublin Core Metadata : http://dublincore.org/ -->
-	<meta name="DC.title" content="Project Name">
-	<meta name="DC.subject" content="@yield('description')">
-	<meta name="DC.creator" content="@yield('author')">
-
 	<!--  Mobile Viewport Fix -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
-	<!-- This is the traditional favicon.
-	 - size: 16x16 or 32x32
-	 - transparency is OK
-	 - see wikipedia for info on browser support: http://mky.be/favicon/ -->
-	<link rel="shortcut icon" href="{{{ asset('assets/ico/favicon.png') }}}">
-
-	<!-- iOS favicons. -->
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{{ asset('assets/ico/apple-touch-icon-144-precomposed.png') }}}">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{{ asset('assets/ico/apple-touch-icon-114-precomposed.png') }}}">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{{ asset('assets/ico/apple-touch-icon-72-precomposed.png') }}}">
-	<link rel="apple-touch-icon-precomposed" href="{{{ asset('assets/ico/apple-touch-icon-57-precomposed.png') }}}">
 
 	<!-- CSS -->
     {{ Basset::show('admin.css') }}
@@ -92,8 +77,8 @@
                 </div>
     			<div class="collapse navbar-collapse navbar-ex1-collapse">
     				<ul class="nav navbar-nav">
-    					<li{{ (Request::is('admin') ? ' class="active"' : '') }}><a href="{{{ URL::to('admin') }}}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-    					<li{{ (Request::is('admin/blogs*') ? ' class="active"' : '') }}><a href="{{{ URL::to('admin/blogs') }}}"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
+    					<li{{ (Request::is('admin') ? ' class="active"' : '') }}><a href="{{{ URL::to('admin/') }}}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+    					<li{{ (Request::is('admin/posts*') ? ' class="active"' : '') }}><a href="{{{ URL::to('admin/posts') }}}"><span class="glyphicon glyphicon-list-alt"></span> Articles</a></li>
     					<li{{ (Request::is('admin/comments*') ? ' class="active"' : '') }}><a href="{{{ URL::to('admin/comments') }}}"><span class="glyphicon glyphicon-bullhorn"></span> Comments</a></li>
     					<li class="dropdown{{ (Request::is('admin/users*|admin/roles*') ? ' active' : '') }}">
     						<a class="dropdown-toggle" data-toggle="dropdown" href="{{{ URL::to('admin/users') }}}">

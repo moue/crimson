@@ -44,13 +44,13 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
     Route::post('comments/{comment}/delete', 'AdminCommentsController@postDelete');
     Route::controller('comments', 'AdminCommentsController');
 
-    # Blog Management
-    Route::get('blogs/{post}/show', 'AdminBlogsController@getShow');
-    Route::get('blogs/{post}/edit', 'AdminBlogsController@getEdit');
-    Route::post('blogs/{post}/edit', 'AdminBlogsController@postEdit');
-    Route::get('blogs/{post}/delete', 'AdminBlogsController@getDelete');
-    Route::post('blogs/{post}/delete', 'AdminBlogsController@postDelete');
-    Route::controller('blogs', 'AdminBlogsController');
+    # Post Management
+    Route::get('posts/{post}/show', 'AdminPostsController@getShow');
+    Route::get('posts/{post}/edit', 'AdminPostsController@getEdit');
+    Route::post('posts/{post}/edit', 'AdminPostsController@postEdit');
+    Route::get('posts/{post}/delete', 'AdminPostsController@getDelete');
+    Route::post('posts/{post}/delete', 'AdminPostsController@postDelete');
+    Route::controller('posts', 'AdminPostsController');
 
     # User Management
     Route::get('users/{user}/show', 'AdminUsersController@getShow');
@@ -68,8 +68,16 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
     Route::post('roles/{role}/delete', 'AdminRolesController@postDelete');
     Route::controller('roles', 'AdminRolesController');
 
-    # Admin Dashboard
-    Route::controller('/', 'AdminDashboardController');
+    # Admin Layout Management
+    Route::get('frontpages/', 'AdminFrontpagesController@getIndex');
+    Route::post('frontpages/', 'AdminFrontpagesController@postIndex');
+    Route::post('frontpages/select', 'AdminFrontpagesController@postSelect');
+    Route::post('frontpages/new', 'AdminFrontpagesController@postNew');
+    Route::post('frontpages/delete', 'AdminFrontpagesController@postDelete');
+
+    Route::get('frontpages/edit/{id}', 'AdminFrontpagesController@getEdit');
+    Route::post('frontpages/edit/{id}', 'AdminFrontpagesController@postEdit');
+    Route::controller('/', 'AdminFrontpagesController');
 });
 
 
@@ -104,8 +112,39 @@ Route::get('contact-us', function()
 });
 
 # Posts - Second to last set, match slug
-Route::get('{postSlug}', 'BlogController@getView');
-Route::post('{postSlug}', 'BlogController@postView');
+Route::get('{postSlug}', 'PostsController@getView');
+Route::post('{postSlug}', 'PostsController@postView');
 
 # Index Page - Last route, no matches
-Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
+Route::get('/', array('before' => 'detectLang','uses' => 'PostsController@getIndex'));
+
+# Layouts - Sidebars
+View::composer('site.layouts.partials.popular_posts', function($view)
+{
+    $view->popularPosts = Post::orderBy('view_count','desc')->take(5)->get();
+});
+
+View::composer('admin.posts.form', function($view) {
+    $section = Section::all()->lists('section', 'id');
+    $users = User::all()->lists('name', 'id');
+    $view->with('section', $section)->with('users', $users);
+});
+
+Route::post('posts/file', function() {
+
+    echo "<pre>";
+    var_dump(Input::file('profile'));
+    echo "</pre>";
+
+});
+
+Route::get('posts/upload', function() {
+
+    return Form::open(array('url' => 'posts/file', 'files' => true)) .
+            Form::file('profile') .
+            Form::submit('upload');
+
+});
+
+View::composer('site.layouts.partials.row', 'library\Composers\RowComposer');
+View::composer('site.layouts.partials.flyby', 'library\Composers\SideBlogComposer');

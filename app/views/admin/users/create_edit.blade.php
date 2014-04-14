@@ -2,22 +2,49 @@
 
 {{-- Content --}}
 @section('content')
-	<!-- Tabs -->
-		<ul class="nav nav-tabs">
-			<li class="active"><a href="#tab-general" data-toggle="tab">General</a></li>
-		</ul>
-	<!-- ./ tabs -->
-
 	{{-- Create User Form --}}
 	<form class="form-horizontal" method="post" action="@if (isset($user)){{ URL::to('admin/users/' . $user->id . '/edit') }}@endif" autocomplete="off">
 		<!-- CSRF Token -->
 		<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 		<!-- ./ csrf token -->
 
+		<!-- Tabs -->
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#tab-general" data-toggle="tab">General</a></li>
+			<li><a href="#tab-account" data-toggle="tab">Account</a></li>
+		</ul>
+		<!-- ./ tabs -->
+
 		<!-- Tabs Content -->
 		<div class="tab-content">
 			<!-- General tab -->
 			<div class="tab-pane active" id="tab-general">
+				
+				<!-- username -->
+				<div class="form-group {{{ $errors->has('name') ? 'error' : '' }}}">
+					<label class="col-md-2 control-label" for="name">Full Name</label>
+					
+					<div class="col-md-10">
+						<input class="form-control" type="text" name="name" id="name" value="{{{ Input::old('name', isset($user) ? $user->name : null) }}}" />
+						{{{ $errors->first('name', '<span class="help-inline">:message</span>') }}}
+						<span class="help-block">Please type in full name as First M. Last.</span>
+					</div>
+				</div>
+				<!-- ./ username -->
+
+				<!-- Class -->
+				<div class="form-group {{{ $errors->has('class') ? 'error' : '' }}}">
+					<label class="col-md-2 control-label" for="class">Graduation Year</label>
+					<div class="col-md-10">
+						<input class="form-control" type="text" name="class" id="class" value="{{{ Input::old('class', isset($user) ? $user->class : null) }}}" />
+						{{{ $errors->first('class', '<span class="help-inline">:message</span>') }}}
+					</div>
+				</div>
+				<!-- ./ Class -->
+			</div>	
+			
+			<!-- Account tab -->
+			<div class="tab-pane" id="tab-account">
 				<!-- username -->
 				<div class="form-group {{{ $errors->has('username') ? 'error' : '' }}}">
 					<label class="col-md-2 control-label" for="username">Username</label>
@@ -77,41 +104,42 @@
 					</div>
 				</div>
 				<!-- ./ activation status -->
-
-				<!-- Groups -->
-				<div class="form-group {{{ $errors->has('roles') ? 'error' : '' }}}">
-	                <label class="col-md-2 control-label" for="roles">Roles</label>
-	                <div class="col-md-6">
-		                <select class="form-control" name="roles[]" id="roles[]" multiple>
-		                        @foreach ($roles as $role)
-									@if ($mode == 'create')
-		                        		<option value="{{{ $role->id }}}"{{{ ( in_array($role->id, $selectedRoles) ? ' selected="selected"' : '') }}}>{{{ $role->name }}}</option>
-		                        	@else
-										<option value="{{{ $role->id }}}"{{{ ( array_search($role->id, $user->currentRoleIds()) !== false && array_search($role->id, $user->currentRoleIds()) >= 0 ? ' selected="selected"' : '') }}}>{{{ $role->name }}}</option>
-									@endif
-		                        @endforeach
-						</select>
-
-						<span class="help-block">
-							Select a group to assign to the user, remember that a user takes on the permissions of the group they are assigned.
-						</span>
-	            	</div>
-				</div>
-				<!-- ./ groups -->
 			</div>
-			<!-- ./ general tab -->
-
+			<!-- ./account tab -->
 		</div>
 		<!-- ./ tabs content -->
 
-		<!-- Form Actions -->
-		<div class="form-group">
-			<div class="col-md-offset-2 col-md-10">
-				<element class="btn-cancel close_popup">Cancel</element>
-				<button type="reset" class="btn btn-default">Reset</button>
-				<button type="submit" class="btn btn-success">OK</button>
-			</div>
+		<!-- Groups -->
+		<div class="form-group {{{ $errors->has('roles') ? 'error' : '' }}}">
+            <label class="col-md-2 control-label" for="roles">Roles</label>
+            <div class="col-md-6">
+                <select class="form-control" name="roles[]" id="roles[]" multiple>
+                        @foreach ($roles as $role)
+							@if ($mode == 'create')
+                        		<option value="{{{ $role->id }}}"{{{ ( in_array($role->id, $selectedRoles) ? ' selected="selected"' : '') }}}>{{{ $role->name }}}</option>
+                        	@else
+								<option value="{{{ $role->id }}}"{{{ ( array_search($role->id, $user->currentRoleIds()) !== false && array_search($role->id, $user->currentRoleIds()) >= 0 ? ' selected="selected"' : '') }}}>{{{ $role->name }}}</option>
+							@endif
+                        @endforeach
+				</select>
+
+				<span class="help-block">
+					Select a group to assign to the user, remember that a user takes on the permissions of the group they are assigned.
+				</span>
+        	</div>
 		</div>
-		<!-- ./ form actions -->
+		<!-- ./ groups -->
+
+		<!-- Form Actions -->
+	    <div class="col-md-offset-2">
+	        <div class="control-group">
+	            <div class="controls">
+	                <element class="btn-cancel close_popup">Cancel</element>
+	                <button type="submit" class="btn btn-success">Submit</button>
+	            </div>
+	        </div>
+	    </div>
+        <!-- ./ form actions -->
+
 	</form>
 @stop

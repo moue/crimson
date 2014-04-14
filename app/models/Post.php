@@ -2,8 +2,20 @@
 
 use Illuminate\Support\Facades\URL; # not sure why i need this here :c
 use Robbo\Presenter\PresentableInterface;
+use LaravelBook\Ardent\Ardent;
+use Carbon\Carbon;
 
-class Post extends Eloquent implements PresentableInterface {
+class Post extends Ardent implements PresentableInterface {
+
+	protected $guarded = ['id'];
+	protected $fillable = ['title', 'content', 'img'];
+	
+	public $timestamps = true;
+	
+	public static $rules = array(
+	    'title' 		=> 'required',
+	    'content' 		=> 'required'
+    );
 
 	/**
 	 * Deletes a blog post and all
@@ -57,13 +69,19 @@ class Post extends Eloquent implements PresentableInterface {
      * @param \Carbon|null $date
      * @return string
      */
-    public function date($date=null)
+    public function date()
     {
-        if(is_null($date)) {
-            $date = $this->created_at;
-        }
+        return $this->created_at->toDateString();
+    }
 
-        return String::date($date);
+    public function formatted_date() 
+    {
+        if ($this->created_at->diffInDays() > 30) {
+            return $this->created_at->toFormattedDateString();
+        } 
+        else {
+            return $this->created_at->diffForHumans();
+        }
     }
 
 	/**
@@ -101,6 +119,10 @@ class Post extends Eloquent implements PresentableInterface {
     public function getPresenter()
     {
         return new PostPresenter($this);
+    }
+
+    public function section() {
+    	return $this->belongsTo('Section');
     }
 
 }

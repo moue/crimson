@@ -14,6 +14,7 @@
 			{{{ $title }}} :: Administration
 		@show
 	</title>
+	<link rel="icon" type="image/jpg" href="http://static.thecrimson.com/images/seal.jpg">
 
 	<meta name="keywords" content="@yield('keywords')" />
 	<meta name="author" content="@yield('author')" />
@@ -30,18 +31,6 @@
 
 	<!--  Mobile Viewport Fix -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
-	<!-- This is the traditional favicon.
-	 - size: 16x16 or 32x32
-	 - transparency is OK
-	 - see wikipedia for info on browser support: http://mky.be/favicon/ -->
-	<link rel="shortcut icon" href="{{{ asset('assets/ico/favicon.png') }}}">
-
-	<!-- iOS favicons. -->
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{{ asset('assets/ico/apple-touch-icon-144-precomposed.png') }}}">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{{ asset('assets/ico/apple-touch-icon-114-precomposed.png') }}}">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{{ asset('assets/ico/apple-touch-icon-72-precomposed.png') }}}">
-	<link rel="apple-touch-icon-precomposed" href="{{{ asset('assets/ico/apple-touch-icon-57-precomposed.png') }}}">
 
 	<!-- CSS -->
     {{ Basset::show('admin.css') }}
@@ -130,7 +119,18 @@ parent.oTable.fnReloadAjax();
 event.preventDefault();
 });
 });
-$('.wysihtml5').wysihtml5();
+
+$('.wysihtml5').wysihtml5({
+    "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+    "emphasis": true, //Italics, bold, etc. Default true
+    "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+    "html": true, //Button which allows you to edit the generated HTML. Default false
+    "link": false, //Button to insert a link. Default true
+    "image": false, //Button to insert an image. Default true,
+    "color": false, //Button to change color of font
+    "size": 'sm' //Button size like sm, xs etc.
+});
+
 $(prettyPrint)
 </script>
 

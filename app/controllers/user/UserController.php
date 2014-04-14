@@ -29,7 +29,7 @@ class UserController extends BaseController {
         if($redirect){return $redirect;}
 
         // Show the page
-        return View::make('site/user/index', compact('user'));
+        return View::make('user/index', compact('user'));
     }
 
     /**
@@ -142,7 +142,7 @@ class UserController extends BaseController {
      */
     public function getCreate()
     {
-        return View::make('site/user/create');
+        return View::make('user/create');
     }
 
 
@@ -157,7 +157,7 @@ class UserController extends BaseController {
             return Redirect::to('/');
         }
 
-        return View::make('site/user/login');
+        return View::make('user/login');
     }
 
     /**
@@ -229,7 +229,7 @@ class UserController extends BaseController {
      */
     public function getForgot()
     {
-        return View::make('site/user/forgot');
+        return View::make('user/forgot');
     }
 
     /**
@@ -258,7 +258,7 @@ class UserController extends BaseController {
     public function getReset( $token )
     {
 
-        return View::make('site/user/reset')
+        return View::make('user/reset')
             ->with('token',$token);
     }
 
@@ -316,7 +316,7 @@ class UserController extends BaseController {
             return App::abort(404);
         }
 
-        return View::make('site/user/profile', compact('user'));
+        return View::make('user/profile', compact('user'));
     }
 
     public function getSettings()
@@ -324,7 +324,7 @@ class UserController extends BaseController {
         list($user,$redirect) = User::checkAuthAndRedirect('user/settings');
         if($redirect){return $redirect;}
 
-        return View::make('site/user/profile', compact('user'));
+        return View::make('user/profile', compact('user'));
     }
 
     /**

@@ -100,3 +100,11 @@ App::down(function()
 */
 
 require __DIR__.'/../filters.php';
+
+/*
+|--------------------------------------------------------------------------
+| Custom Event Handling
+|--------------------------------------------------------------------------
+*/
+
+Event::listen('posts.view', 'library\Events\ViewPostHandler');

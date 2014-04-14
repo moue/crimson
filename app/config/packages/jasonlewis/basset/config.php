@@ -32,14 +32,17 @@ return array(
         {
             $collection->directory('assets/css', function($collection)
             {
-                $collection->add('less/master.less')->apply('Less');
+                //$collection->add('less/master.less')->apply('Less');
+                $collection->add('crimson.css');
+
             })->apply('UriRewriteFilter')->apply('CssMin');
 
             $collection->directory('assets/js', function($collection)
             {
-                $collection->javascript('http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js');
-                $collection->add('bootstrap/bootstrap.js');
-                $collection->requireDirectory('../../../vendor/twbs/bootstrap/js');
+                //$collection->javascript('http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js');
+                //$collection->add('bootstrap/bootstrap.js');
+                //$collection->requireDirectory('../../../vendor/twbs/bootstrap/js');
+                $collection->add('crimson.js');
             })->apply('JsMin');
         },
 
@@ -52,6 +55,7 @@ return array(
                 $collection->add('wysihtml5/bootstrap-wysihtml5.css');
                 $collection->add('datatables-bootstrap.css');
                 $collection->add('colorbox.css');
+                $collection->add('nestable.css');
             })->apply('UriRewriteFilter')->apply('CssMin');
 
             $collection->directory('assets/js', function($collection)
@@ -66,6 +70,7 @@ return array(
                 $collection->add('datatables.fnReloadAjax.js');
                 $collection->add('jquery.colorbox.js');
                 $collection->add('prettify.js');
+                $collection->add('jquery.nestable.js');
             })->apply('JsMin');
         }
 

@@ -88,7 +88,9 @@ class AdminUsersController extends AdminController {
      */
     public function postCreate()
     {
+        $this->user->name = Input::get( 'name' );
         $this->user->username = Input::get( 'username' );
+        $this->user->class = Input::get('class');
         $this->user->email = Input::get( 'email' );
         $this->user->password = Input::get( 'password' );
 
@@ -282,7 +284,7 @@ class AdminUsersController extends AdminController {
     {
         $users = User::leftjoin('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
                     ->leftjoin('roles', 'roles.id', '=', 'assigned_roles.role_id')
-                    ->select(array('users.id', 'users.username','users.email', 'roles.name as rolename', 'users.confirmed', 'users.created_at'));
+                    ->select(array('users.id', 'users.name', 'users.username', 'users.class', 'roles.name as rolename', 'users.confirmed'));
 
         return Datatables::of($users)
         // ->edit_column('created_at','{{{ Carbon::now()->diffForHumans(Carbon::createFromFormat(\'Y-m-d H\', $test)) }}}')
@@ -296,7 +298,7 @@ class AdminUsersController extends AdminController {
         ->add_column('actions', '<a href="{{{ URL::to(\'admin/users/\' . $id . \'/edit\' ) }}}" class="iframe btn btn-xs btn-default">{{{ Lang::get(\'button.edit\') }}}</a>
                                 @if($username == \'admin\')
                                 @else
-                                    <a href="{{{ URL::to(\'admin/users/\' . $id . \'/delete\' ) }}}" class="iframe btn btn-xs btn-danger">{{{ Lang::get(\'button.delete\') }}}</a>
+                                    <a href="{{{ URL::to(\'admin/users/\' . $id . \'/delete\' ) }}}" class="iframe btn btn-xs btn-danger">{{{ Lang::get(\'button.deactivate\') }}}</a>
                                 @endif
             ')
 

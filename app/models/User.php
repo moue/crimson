@@ -10,6 +10,37 @@ use Carbon\Carbon;
 class User extends ConfideUser implements PresentableInterface {
     use HasRole;
 
+    /**
+     * Ardent validation rules
+     *
+     * @var array
+     */
+    public static $rules = array(
+        'name'     => 'required',
+        'class'    => 'required|numeric|min:4',
+        'username' => 'alpha',
+        'email'    => 'email',
+        'password' => 'confirmed'
+    );
+
+    /*public function getRules() {
+        if (Entrust::hasRole('writer')) {
+            $rules = static::$rules;
+            return $rules = array(
+                'name'     => 'required|unique:users',
+                'class'    => 'required|numeric|min:4',
+            );
+        }
+        else {
+            $rules = static::$rules;
+            return $rules = array(
+                'username' => 'required|unique:users',
+                'email'    => 'required|unique:users',
+                'password' => 'confirmed'
+            )
+        }
+    );*/
+
 	/**
 	 * The database table used by the model.
 	 *

@@ -15,14 +15,17 @@ class CreatePostsTable extends Migration {
 		Schema::create('posts', function($table)
 		{
             $table->engine = 'InnoDB';
-			$table->increments('id')->unsigned();
+			$table->increments('id')->unsigned(); 
 			$table->integer('user_id')->unsigned();
+			$table->unsignedInteger('section_id');
+			$table->string('writer');
 			$table->string('title');
 			$table->string('slug');
 			$table->text('content');
-			$table->string('meta_title');
-			$table->string('meta_description');
-			$table->string('meta_keywords');
+			$table->text('snippit');
+			$table->string('img')->nullable();
+			$table->string('photog')->nullable();
+			$table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade')->onUpdate('cascade');
 			$table->timestamps();
 		});
 	}
@@ -34,6 +37,12 @@ class CreatePostsTable extends Migration {
 	 */
 	public function down()
 	{
+		// Drop foreign key constraint
+		Schema::table('posts', function($table) 
+		{
+			$table->dropForeign('posts_section_id_foreign');
+		});
+
 		// Delete the `Posts` table
 		Schema::drop('posts');
 	}
