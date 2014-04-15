@@ -26,77 +26,41 @@
 
 {{-- Content --}}
 @section('content')
-<h3>{{ $post->title }}</h3>
+<div id="article">
+    <div id="article-header">
+            
+        <h1>{{ $post->title }}</h1>
+                
+        <div class="article-byline">
+            By {{ $post->author->name }} 
+            <time class="article-date">{{ $post->formatted_date() }}</time>
+        </div>
+    </div>
 
-<p>{{ $post->content() }}</p>
+    <div id="article-body">
+            
+        <div id="text">
+            <p>{{ $post->content() }}</p>
 
-<div>
-	<span class="badge badge-info">Posted {{{ $post->date() }}}</span>
+        </div>
+    </div>
 </div>
 
 <hr />
 
-<a id="comments"></a>
-<h4>{{{ $comments->count() }}} Comments</h4>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = 'thecrirmson'; // required: replace example with your forum shortname
 
-@if ($comments->count())
-@foreach ($comments as $comment)
-<div class="row">
-	<div class="col-md-1">
-		<img class="thumbnail" src="http://placehold.it/60x60" alt="">
-	</div>
-	<div class="col-md-11">
-		<div class="row">
-			<div class="col-md-11">
-				<span class="muted">{{{ $comment->author->username }}}</span>
-				&bull;
-				{{{ $comment->date() }}}
-			</div>
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
-			<div class="col-md-11">
-				<hr />
-			</div>
-
-			<div class="col-md-11">
-				{{{ $comment->content() }}}
-			</div>
-		</div>
-	</div>
-</div>
-<hr />
-@endforeach
-@else
-<hr />
-@endif
-
-@if ( ! Auth::check())
-You need to be logged in to add comments.<br /><br />
-Click <a href="{{{ URL::to('user/login') }}}">here</a> to login into your account.
-@elseif ( ! $canComment )
-You don't have the correct permissions to add comments.
-@else
-
-@if($errors->has())
-<div class="alert alert-danger alert-block">
-<ul>
-@foreach ($errors->all() as $error)
-	<li>{{ $error }}</li>
-@endforeach
-</ul>
-</div>
-@endif
-
-<h4>Add a Comment</h4>
-<form  method="post" action="{{{ URL::to($post->slug) }}}">
-	<input type="hidden" name="_token" value="{{{ Session::getToken() }}}" />
-
-	<textarea class="col-md-12 input-block-level" rows="4" name="comment" id="comment">{{{ Request::old('comment') }}}</textarea>
-
-	<div class="form-group">
-		<div class="col-md-12">
-			<input type="submit" class="btn btn-default" id="submit" value="Submit" />
-		</div>
-	</div>
-</form>
-@endif
 @stop
